@@ -1,8 +1,8 @@
-import logo from './logo.svg'
 import './App.css'
 
 import useNearEarth from './lib/useNearEarth.js'
 import Loader from './components/Loader.js'
+import NearEarthChart from './components/NearEarthChart'
 
 function App() {
   const {data, error, loading} = useNearEarth()
@@ -25,9 +25,21 @@ function App() {
     return null
   }
 
-  const getData = () => {
+  const getNearEarthChart = () => {
+    const options = {
+      title: "",
+      chartArea: { width: "50%" },
+      hAxis: {
+        title: "Estimated Diameter (km)",
+        minValue: 0,
+      },
+      vAxis: {
+        title: "NEO Name",
+      },
+    };
     if (!!data) {
-      return <code>{JSON.stringify(data)}</code>
+      const nearEarthChartData = [['NEO Name', 'Min Estimated Diameter', 'Max Estimated Diameter'], ...data]
+      return <NearEarthChart data={nearEarthChartData} options={options} />
     }
     return null
   }
@@ -42,7 +54,7 @@ function App() {
       <main className="App-main">
         {getLoader()}
         {getError()}
-        {getData()}
+        {getNearEarthChart()}
       </main>
     </div>
   );
