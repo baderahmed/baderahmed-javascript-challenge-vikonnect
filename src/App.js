@@ -1,30 +1,31 @@
+import { useState, useEffect, memo } from 'react'
+import Select from 'react-select';
+
 import './App.css'
 
 import useNearEarth from './lib/useNearEarth.js'
 import Loader from './components/Loader.js'
 import NearEarthChart from './components/NearEarthChart'
 
-import { orbitingBodiesList, barChartDataFormat } from './formatData'
+import { orbitingBodiesList, barChartDataFormat, filterByOrbiting } from './formatData'
 
 function App() {
-  let orbitingBodies;
-  const {data, error, loading} = useNearEarth()
-  if (data) {
-    orbitingBodies = orbitingBodiesList(data);
-    console.log("orbitingBodies", orbitingBodies)
-  }
-  console.log({
-    data,
-    error,
-    loading: !data && !error
-  })
+  const [orbitingBodies, setOrbitingBodies] = useState(null)
+  const { data, error, loading } = useNearEarth()
+  const [nearEarthData, setNearEarthData] = useState(null)
+  useEffect(() => {
+    if (data) {
+      setNearEarthData(data)
+      setOrbitingBodies(orbitingBodiesList(data))
+    }
+  }, [data])
   const getLoader = () => {
     if (loading) {
       return <Loader />
     }
     return null;
   }
-  
+
   const getError = () => {
     if (!!error) {
       return <error>{error}</error>
@@ -32,25 +33,23 @@ function App() {
     return null
   }
 
+  const onChangeOrbiting = (event) => {
+    if (data) {
+      setNearEarthData(filterByOrbiting(data, event.value))
+    }
+  }
+
   const getNearEarthChart = () => {
-    const options = {
-      title: "",
-      chartArea: { width: "100%" },
-      hAxis: {
-        title: "Estimated Diameter (km)",
-        minValue: 0,
-      },
-      vAxis: {
-        title: "NEO Name",
-      },
-    };
-    if (!!data) {
-      const nearEarthChartData = barChartDataFormat(data)
-      return <section>
-        <section>
-          <NearEarthChart data={nearEarthChartData} options={options} />
-        </section>
-      </section>
+    if (nearEarthData) {
+      const nearEarthChartData = barChartDataFormat(nearEarthData)
+      return (
+        <section className="App-chart">
+          <div>
+            {!!orbitingBodies && <Select options={orbitingBodies} onChange={onChangeOrbiting} />}
+          </div>
+          <NearEarthChart data={nearEarthChartData} />
+        </section >
+      )
     }
     return null
   }
@@ -71,4 +70,4 @@ function App() {
   );
 }
 
-export default App;
+export default memo(App);

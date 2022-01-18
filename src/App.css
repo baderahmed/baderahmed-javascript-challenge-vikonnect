@@ -31,12 +31,20 @@
 .App-main {
   background-color: white;
   min-height: 80vh;
+  /* display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; */
+  font-size: calc(10px + 1vmin);
+  color: #282c34;
+}
+
+.App-chart {
+  background-color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 1vmin);
-  color: #282c34;
+  justify-content: right;
 }
 
 .App-link {
