@@ -4,8 +4,15 @@ import useNearEarth from './lib/useNearEarth.js'
 import Loader from './components/Loader.js'
 import NearEarthChart from './components/NearEarthChart'
 
+import { orbitingBodiesList, barChartDataFormat } from './formatData'
+
 function App() {
+  let orbitingBodies;
   const {data, error, loading} = useNearEarth()
+  if (data) {
+    orbitingBodies = orbitingBodiesList(data);
+    console.log("orbitingBodies", orbitingBodies)
+  }
   console.log({
     data,
     error,
@@ -28,7 +35,7 @@ function App() {
   const getNearEarthChart = () => {
     const options = {
       title: "",
-      chartArea: { width: "50%" },
+      chartArea: { width: "100%" },
       hAxis: {
         title: "Estimated Diameter (km)",
         minValue: 0,
@@ -38,8 +45,12 @@ function App() {
       },
     };
     if (!!data) {
-      const nearEarthChartData = [['NEO Name', 'Min Estimated Diameter', 'Max Estimated Diameter'], ...data]
-      return <NearEarthChart data={nearEarthChartData} options={options} />
+      const nearEarthChartData = barChartDataFormat(data)
+      return <section>
+        <section>
+          <NearEarthChart data={nearEarthChartData} options={options} />
+        </section>
+      </section>
     }
     return null
   }
