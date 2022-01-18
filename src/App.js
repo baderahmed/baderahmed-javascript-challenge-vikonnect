@@ -1,23 +1,49 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from './logo.svg'
+import './App.css'
+
+import useNearEarth from './lib/useNearEarth.js'
+import Loader from './components/Loader.js'
 
 function App() {
+  const {data, error, loading} = useNearEarth()
+  console.log({
+    data,
+    error,
+    loading: !data && !error
+  })
+  const getLoader = () => {
+    if (loading) {
+      return <Loader />
+    }
+    return null;
+  }
+  
+  const getError = () => {
+    if (!!error) {
+      return <error>{error}</error>
+    }
+    return null
+  }
+
+  const getData = () => {
+    if (!!data) {
+      return <code>{JSON.stringify(data)}</code>
+    }
+    return null
+  }
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          Vikonnect Javascript Challenge
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
       </header>
+      <main className="App-main">
+        {getLoader()}
+        {getError()}
+        {getData()}
+      </main>
     </div>
   );
 }
