@@ -42,7 +42,7 @@ function sortByAverage(data) {
 export function barChartDataFormat(data) {
   let result = sortByAverage(data)
   if (result?.near_earth_objects) {
-    result = data.near_earth_objects.map((nearEarthObject) => {
+    result = result.near_earth_objects.map((nearEarthObject) => {
       return [
         nearEarthObject.neo_reference_id,
         nearEarthObject.estimated_diameter.kilometers.estimated_diameter_min,

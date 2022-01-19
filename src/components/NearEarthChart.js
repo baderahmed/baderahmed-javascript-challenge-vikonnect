@@ -6,7 +6,7 @@ function NearEarthChart({ data }) {
   return useMemo(() => {
     const options = {
       title: "",
-      chartArea: { width: "50%" },
+      chartArea: { width: "50%", height: "100%",},
       hAxis: {
         title: "Estimated Diameter (km)",
         minValue: 0,
