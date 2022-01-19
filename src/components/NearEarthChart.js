@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import PropTypes from 'prop-types'
 import { Chart } from 'react-google-charts'
 
 function NearEarthChart({ data }) {
@@ -28,6 +29,10 @@ function NearEarthChart({ data }) {
     }
     return null
   }, [data])
+}
+
+NearEarthChart.propTypes = {
+  data: PropTypes.object.isRequired
 }
 
 export default NearEarthChart
